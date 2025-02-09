@@ -1,36 +1,27 @@
 import json
 
 def format_data(content: list) -> str:
-    texts = []
-    for item in content:
-        if item['type'] == 'text':
-            texts.append(item['data']['text'])
-        elif item['type'] == 'face':
-            try:
-                face_text = item['data']['raw']['faceText']
-            except KeyError:
-                face_text = None
-            if face_text:
-                texts.append(face_text)
-        elif item['type'] == 'record':
-            summary = "[语音]"
-            texts.append(summary)
-        elif item['type'] == 'image':
-            summary = item['data']['summary']
-            if summary == '':
-                summary = "[图像]"
-            texts.append(summary)
-        elif item['type'] == 'json':
-            data = json.loads(item['data']['data'])
-            prompt = data['prompt']
-            texts.append(prompt)
-        elif item['type'] == 'at':
-            qq_name = item['data']['qq']
-            if qq_name == 'all':
-                qq_name = '全体成员'
-            texts.append('@' + qq_name)
-        elif item['type'] == 'reply':
-            texts.append('[引用其他消息]')
-        else:
-            texts.append('[未知]')
+    """Beautify message content
+
+    Args:
+        content (list): Message content
+
+    Returns:
+        str: Beautified message content
+    """
+    processMap = {
+        'text': lambda x: x['data']['text'],
+        'face': lambda x: x['data']['raw'].get('faceText', ''),
+        'record': lambda x: "[语音]",
+        'image': lambda x: x['data']['summary'] if x['data']['summary'] != '' else "[图像]",
+        'json': lambda x: json.loads(x['data']['data'])['prompt'],
+        'at': lambda x: '@' + (x['data']['qq'] if x['data']['qq'] != 'all' else '全体成员'),
+        'reply': lambda x: '[引用其他消息]',
+    }
+
+    def __processData(subcontent)->str:
+        return processMap.get(subcontent["type"], lambda x: '')(subcontent)
+
+    texts = list(map(__processData, content))
+        
     return ''.join(texts)
