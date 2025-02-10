@@ -10,7 +10,7 @@
         "mcdreforged": ">=2.1.0",
         "im_api": ">=0.1.0"
     },
-    "author": "Mooling0602",
+    "author": ["Mooling0602", "XueK66"],
     "link": "https://github.com/Mooling0602/ImShareChat",
     "entrypoint": "im_share_chat.core.entry"
 }
