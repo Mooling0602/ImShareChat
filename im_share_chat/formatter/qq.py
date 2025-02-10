@@ -1,13 +1,13 @@
 import json
 
 def format_data(content: list) -> str:
-    """Beautify message content
+    """美化消息内容
 
     Args:
-        content (list): Message content
+        content (list): message.content
 
     Returns:
-        str: Beautified message content
+        str: 美化后的消息内容文本
     """
     processMap = {
         'text': lambda x: x['data']['text'],
