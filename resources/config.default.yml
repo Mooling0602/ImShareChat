@@ -1,0 +1,24 @@
+# Groups configuration.
+groups:
+  # Matrix Room ID.
+  matrix: ""
+  # QQ group number.
+  qq: ""
+# Message format configuration.
+format:
+  # Chat message format.
+  chat: 
+    im: '[{im_platform} | {group_name}] <{user_name}> {content}'
+    game: '[MC] <{player}> {message}'
+  # Message for player joined the server.
+  on_player_joined: '[+] {player}'
+  # Message for player left the game.
+  on_player_left: '[-] {player}'
+  # Message for server will start.
+  on_server_start_pre: '[MC] Server will start!'
+  # Message for server startup.
+  on_server_startup: '[MC] Server startup!'
+  # Message for server stop.
+  on_server_stop: '[MC] Server stopped!'
+  # Message for server crash.
+  on_server_crash: '[MC] Server crashed!'

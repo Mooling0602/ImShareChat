@@ -1,0 +1,26 @@
+# 接入消息互通的群聊配置
+groups:
+  # Matrix房间ID.
+  matrix: ""
+  # QQ群数字号码
+  qq: ""
+# 消息格式配置
+format:
+  # 聊天消息格式
+  chat: 
+    # IM平台聊天消息
+    im: '[{im_platform} | {group_name}] <{user_name}> {content}'
+    # Minecraft聊天消息
+    game: '[MC] <{player}> {message}'
+  # 玩家上线消息
+  on_player_joined: '[+] {player}'
+  # 玩家下线消息
+  on_player_left: '[-] {player}'
+  # 开服消息
+  on_server_start_pre: '[MC] Server will start!'
+  # 开服完成消息
+  on_server_startup: '[MC] Server startup!'
+  # 关服消息
+  on_server_stop: '[MC] Server stopped!'
+  # 崩服消息
+  on_server_crash: '[MC] Server crashed!'

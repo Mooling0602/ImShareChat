@@ -1,6 +1,6 @@
 {
     "id": "im_share_chat",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "name": "ImShareChat",
     "description": {
         "en_us": "A cross-platform instant message sharing plugin for MCDReforged.",
@@ -12,5 +12,6 @@
     },
     "author": ["Mooling0602", "XueK66"],
     "link": "https://github.com/Mooling0602/ImShareChat",
-    "entrypoint": "im_share_chat.core.entry"
+    "entrypoint": "im_share_chat.core.entry",
+    "resources": ["resources"]
 }

@@ -48,7 +48,13 @@ def on_im_message(server: PluginServerInterface, platform: Platform, message: Me
     if isinstance(content, str) and content.strip() == "":
         content = "[未知消息类型]"
 
-    formatted = f"[{im_platform} | {group_name}] <{user_name}> {content}"
+    formatted = cfg.chat_format_im.format(
+        im_platform=im_platform,
+        group_name=group_name,
+        user_name=user_name,
+        content=content
+    )
+    
     server.logger.info(f"Formatted message: {formatted}")
     
     # 调用对应转发函数
