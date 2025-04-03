@@ -26,7 +26,7 @@ def on_server_start_pre(server: PluginServerInterface):
 
 def on_server_startup(server: PluginServerInterface):
     if cfg.on_player_death is True or cfg.on_player_advancement is True:
-        if "mg_events" not in server.get_loaded_plugins():
+        if "mg_events" not in server.get_plugin_list():
             server.logger.warning("Dependency missing: enabled at least one option in transfer_game_event_to_im, but mg_events not found.")
     transfer_to_qq(server, cfg.on_server_startup_format)
     transfer_to_matrix(server, cfg.on_server_startup_format)
