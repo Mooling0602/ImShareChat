@@ -1,6 +1,6 @@
 {
     "id": "im_share_chat",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "name": "ImShareChat",
     "description": {
         "en_us": "A cross-platform instant message sharing plugin for MCDReforged.",

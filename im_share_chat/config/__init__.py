@@ -26,3 +26,5 @@ def load_config(server: PluginServerInterface):
     cfg.on_server_startup_format = config['format']['on_server_startup']
     cfg.on_server_stop_format = config['format']['on_server_stop']
     cfg.on_server_crash_format = config['format']['on_server_crash']
+    cfg.on_player_death = config['transfer_game_event_to_im']['on_player_death']
+    cfg.on_player_advancement = config['transfer_game_event_to_im']['on_player_advancement']

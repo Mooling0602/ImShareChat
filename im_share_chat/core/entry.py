@@ -2,6 +2,7 @@ import im_share_chat.config.applying as cfg
 
 from mcdreforged.api.all import *
 
+from im_share_chat.utils import execute_if
 from im_share_chat.config import load_config
 from im_share_chat.core.listener import on_im_message
 from im_share_chat.core.reporter import transfer_to_qq, transfer_to_matrix
@@ -16,14 +17,37 @@ def on_load(server: PluginServerInterface, prev_module):
         server.logger.warning("Config missing: groups.matrix")
     configDir = server.get_data_folder()
     server.logger.info(f"ImShareChat config folder: {configDir}")
+    server.register_event_listener("PlayerDeathEvent", on_player_death)
+    server.register_event_listener("PlayerAdvancementEvent", on_player_advancement)
 
 def on_server_start_pre(server: PluginServerInterface):
     transfer_to_qq(server, cfg.on_server_start_pre_format)
     transfer_to_matrix(server, cfg.on_server_start_pre_format)
 
 def on_server_startup(server: PluginServerInterface):
+    if cfg.on_player_death is True or cfg.on_player_advancement is True:
+        if "mg_events" not in server.get_loaded_plugins():
+            server.logger.warning("Dependency missing: enabled at least one option in transfer_game_event_to_im, but mg_events not found.")
     transfer_to_qq(server, cfg.on_server_startup_format)
     transfer_to_matrix(server, cfg.on_server_startup_format)
+
+@execute_if(lambda: cfg.on_player_death is True)
+def on_player_death(server: PluginServerInterface, player, event, content):
+    player: str = player
+    event: str = event
+    for i in content:
+        if i.locale == 'zh_cn':
+            transfer_to_qq(server, i.raw)
+            transfer_to_matrix(server, i.raw)
+
+@execute_if(lambda: cfg.on_player_advancement is True)
+def on_player_advancement(server: PluginServerInterface, player, event, content):
+    player: str = player
+    event: str = event
+    for i in content:
+        if i.locale == 'zh_cn':
+            transfer_to_qq(server, i.raw)
+            transfer_to_matrix(server, i.raw)    
 
 def on_player_joined(server: PluginServerInterface, player: str, info: Info):
     transfer_to_qq(server, cfg.on_player_joined_format.format(player=player))

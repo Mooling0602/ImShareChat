@@ -8,3 +8,5 @@ on_server_start_pre_format = None
 on_server_startup_format = None
 on_server_stop_format = None
 on_server_crash_format = None
+on_player_death = None
+on_player_advancement = None

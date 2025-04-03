@@ -14,5 +14,9 @@ default_config = {
         "on_server_startup": "",
         "on_server_stop": "",
         "on_server_crash": ""
+    },
+    "transfer_game_event_to_im": {
+        "on_player_death": True,
+        "on_player_advancement": True
     }
 }

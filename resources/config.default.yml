@@ -22,3 +22,9 @@ format:
   on_server_stop: '[MC] Server stopped!'
   # Message for server crash.
   on_server_crash: '[MC] Server crashed!'
+# Transfer game event messages configuration.
+transfer_game_event_to_im:
+  # Transfer player death event message.
+  on_player_death: true
+  # Transfer player advancement event message.
+  on_player_advancement: true
