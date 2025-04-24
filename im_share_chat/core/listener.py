@@ -55,8 +55,6 @@ def on_im_message(server: PluginServerInterface, platform: Platform, message: Me
         content=content
     )
     
-    server.logger.info(f"Formatted message: {formatted}")
-    
     # 调用对应转发函数
     handler['transfer_func'](server, formatted)
     server.broadcast(formatted)
