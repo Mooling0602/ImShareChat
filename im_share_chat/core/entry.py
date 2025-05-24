@@ -66,6 +66,16 @@ def on_command_rcon(src: CommandSource, ctx: CommandContext):
         return
     rcon_command = ctx['command']
     server = src.get_server()
+    for i in [
+        "op",
+        "ban",
+        "pardon",
+        "whitelist",
+        "stop"
+    ]:
+        if i in rcon_command.lower():
+            src.reply("[ImShareChat] 不允许通过Rcon执行高风险操作如关闭服务器等！")
+            return
     src.reply(
         "[ImShareChat]\n" +
         "- 警告：\n" +
