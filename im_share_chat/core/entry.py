@@ -1,11 +1,18 @@
+import time
 import im_share_chat.config.applying as cfg
 
 from mcdreforged.api.all import *
+from mcdreforged.command.builder.callback import CallbackError
 
 from im_share_chat.utils import execute_if
 from im_share_chat.config import load_config
 from im_share_chat.core.listener import on_im_message
 from im_share_chat.core.reporter import transfer_to_qq, transfer_to_matrix
+from im_share_chat.rcon import query_rcon_result
+from im_share_chat.command_source import ImCommandSource
+
+
+builder = SimpleCommandBuilder()
 
 
 def on_load(server: PluginServerInterface, prev_module):
@@ -19,6 +26,8 @@ def on_load(server: PluginServerInterface, prev_module):
     server.logger.info(f"ImShareChat config folder: {configDir}")
     server.register_event_listener("PlayerDeathEvent", on_player_death)
     server.register_event_listener("PlayerAdvancementEvent", on_player_advancement)
+    builder.arg("command", QuotableText)
+    builder.register(server)
 
 def on_server_start_pre(server: PluginServerInterface):
     transfer_to_qq(server, cfg.on_server_start_pre_format)
@@ -47,7 +56,36 @@ def on_player_advancement(server: PluginServerInterface, player, event, content)
     for i in content:
         if i.locale == 'zh_cn':
             transfer_to_qq(server, i.raw)
-            transfer_to_matrix(server, i.raw)    
+            transfer_to_matrix(server, i.raw)
+
+
+@builder.command("!!ichat rcon <command>")
+def on_command_rcon(src: CommandSource, ctx: CommandContext):
+    if not isinstance(src, ImCommandSource):
+        src.reply("该命令只能在外部Im平台中使用！")
+        return
+    rcon_command = ctx['command']
+    server = src.get_server()
+    src.reply(
+        "[ImShareChat]\n" +
+        "- 警告：\n" +
+        "Rcon查询是实验性功能，任何人都可使用！\n" +
+        "请不要在生产环境使用此开发中版本，等待正式更新！\n" +
+        "- 备注：\n" +
+        f"用户 - {src.user_id}\n" +
+        f"指令内容 - {rcon_command}\n"
+    )
+    resp = query_rcon_result(server, rcon_command)
+    result = None
+    for attempt in range(3):
+        try:
+            result = resp.get_return_value()
+            break
+        except (CallbackError, RuntimeError):
+            if attempt == 2:
+                raise
+            time.sleep(0.1)
+    src.reply(f"[ImShareChat] 命令返回结果: \n{result}")
 
 def on_player_joined(server: PluginServerInterface, player: str, info: Info):
     transfer_to_qq(server, cfg.on_player_joined_format.format(player=player))

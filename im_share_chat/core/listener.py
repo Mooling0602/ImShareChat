@@ -7,6 +7,8 @@ from im_api.models.message import Event, Message
 
 from im_share_chat.formatter.qq import format_data as format_qq_data
 from im_share_chat.core.reporter import transfer_to_matrix, transfer_to_qq
+from im_share_chat.rcon import handle_rcon_requests
+from im_share_chat.command_source import ImCommandSource
 
 
 class PlatformDisplayname(Enum):
@@ -48,13 +50,21 @@ def on_im_message(server: PluginServerInterface, platform: Platform, message: Me
     if isinstance(content, str) and content.strip() == "":
         content = "[未知消息类型]"
 
-    formatted = cfg.chat_format_im.format(
-        im_platform=im_platform,
-        group_name=group_name,
-        user_name=user_name,
-        content=content
-    )
+    src = ImCommandSource(server, message, platform)
+    match content:
+        case content if content.startswith("!!ichat rcon "):
+            command = content[len("!!ichat rcon "):].strip()
+            if " " in command:
+                command = f'"{command}"'
+            handle_rcon_requests(src, command)
+        case _:
+            formatted = cfg.chat_format_im.format(
+                im_platform=im_platform,
+                group_name=group_name,
+                user_name=user_name,
+                content=content
+            )
     
-    # 调用对应转发函数
-    handler['transfer_func'](server, formatted)
-    server.broadcast(formatted)
+            # 调用对应转发函数
+            handler['transfer_func'](server, formatted)
+            server.broadcast(formatted)
