@@ -1,6 +1,9 @@
+"""Format QQ message data.
+"""
 import json
 
-def format_data(content: list) -> str:
+
+def format_data(content: list) -> str:  # type: ignore
     """美化消息内容
 
     Args:
@@ -9,19 +12,25 @@ def format_data(content: list) -> str:
     Returns:
         str: 美化后的消息内容文本
     """
-    processMap = {
-        'text': lambda x: x['data']['text'],
-        'face': lambda x: x['data']['raw'].get('faceText', ''),
-        'record': lambda x: "[语音]",
-        'image': lambda x: x['data']['summary'] if x['data']['summary'] != '' else "[图像]",
-        'json': lambda x: json.loads(x['data']['data'])['prompt'],
-        'at': lambda x: '@' + (x['data']['qq'] if x['data']['qq'] != 'all' else '全体成员'),
-        'reply': lambda x: '[引用其他消息]',
+
+    processMap = {  # type: ignore  #pylint: disable=invalid-name
+        'text': lambda x: x['data']['text'],  # type: ignore
+        'face': lambda x: x['data']['raw'].get('faceText', ''),  # type: ignore
+        'record': lambda x: "[语音]",  # type: ignore
+        'image': lambda x: (  # type: ignore
+            x['data']['summary'] if x['data']['summary'] != '' else "[图像]"
+        ),  # type: ignore
+        'json': lambda x: json.loads(x['data']['data'])['prompt'],  # type: ignore
+        'at': lambda x: (  # type: ignore
+            '@' + (x['data']['qq'] if x['data']['qq'] != 'all' else '全体成员')),  # type: ignore
+        'reply': lambda x: '[引用其他消息]',  # type: ignore
     }
 
-    def __processData(subcontent)->str:
-        return processMap.get(subcontent["type"], lambda x: '')(subcontent)
+    def __processData(subcontent)->str:  # type: ignore  # pylint: disable=invalid-name
+        """__Description__
+        """
+        return processMap.get(subcontent["type"], lambda x: '')(subcontent)  # type: ignore
 
-    texts = list(map(__processData, content))
-        
+    texts = list(map(__processData, content))  # type: ignore
+
     return ''.join(texts)

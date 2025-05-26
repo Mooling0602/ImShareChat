@@ -1,4 +1,9 @@
-default_config = {
+"""Config dict format
+"""
+from typing import Any
+
+
+default_config: dict[str, Any] = {
     "groups": {
         "qq": "",
         "matrix": ""
