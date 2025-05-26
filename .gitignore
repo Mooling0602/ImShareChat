@@ -2,3 +2,4 @@
 *.mcdr
 *.zip
 deps/
+.vscode/
