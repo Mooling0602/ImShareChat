@@ -1,5 +1,7 @@
 *.pyz
 *.mcdr
 *.zip
+__pycache__/
 deps/
 .vscode/
+debug_env/
