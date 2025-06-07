@@ -4,7 +4,8 @@ import json
 
 
 def format_data(content: list) -> str:  # type: ignore
-    """美化消息内容
+    """~~美化消息内容~~
+    该方法目前已失效。
 
     Args:
         content (list): message.content

@@ -10,7 +10,6 @@ import im_share_chat.config.applying as cfg
 from im_share_chat.command_source import ImCommandSource
 from im_share_chat.core.reporter import transfer_to_matrix, transfer_to_qq
 from im_share_chat.formatter.qq import format_data as format_qq_data  # type: ignore
-from im_share_chat.rcon import handle_rcon_requests
 
 
 class PlatformDisplayname(Enum):
@@ -64,11 +63,13 @@ def on_im_message(server: PluginServerInterface, platform: Platform, message: Me
 
     src = ImCommandSource(server, message, platform)
     match content:
-        case content if content.startswith("!!ichat rcon "):
-            command = content[len("!!ichat rcon "):].strip()
+        case content if content.startswith("/"):
+            command = content[len("/"):].strip()
             if " " in command:
                 command = f'"{command}"'
-            handle_rcon_requests(src, command)
+            server.execute_command(f"!!ichat rcon {command}", src)
+        case content if content.startswith("!!"):
+            server.execute_command(content, src)
         case _:
             if not isinstance(cfg.chat_format_im, str):
                 raise TypeError('Config error!')

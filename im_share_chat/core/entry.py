@@ -87,26 +87,21 @@ def on_command_rcon(src: CommandSource, ctx: CommandContext):
         src.reply("该命令只能在外部Im平台中使用！") # type: ignore
         return
     rcon_command = ctx['command']
+    if not src.has_permission_higher_than(2):
+        if rcon_command not in cfg.allowed_rcon_commands:
+            src.reply("只有管理员才能运行该命令！")
+            return
     server = src.get_server()
+    if not server.is_rcon_running():
+        src.reply("请正确配置并启用MCDR内置的Rcon支持！")
+        return
     for i in [
-        "op",
-        "ban",
-        "pardon",
-        "whitelist",
+        "restart",
         "stop"
     ]:
         if i in rcon_command.lower():
-            src.reply("[ImShareChat] 不允许通过Rcon执行高风险操作如关闭服务器等！")
+            src.reply("不允许通过Rcon执行高风险操作如关闭服务器等！")
             return
-    src.reply(
-        "[ImShareChat]\n" +
-        "- 警告：\n" +
-        "Rcon查询是实验性功能，任何人都可使用！\n" +
-        "请不要在生产环境使用此开发中版本，等待正式更新！\n" +
-        "- 备注：\n" +
-        f"用户 - {src.user_id}\n" +
-        f"指令内容 - {rcon_command}\n"
-    )
     resp = query_rcon_result(server, rcon_command) # type: ignore
     result = None
     for attempt in range(3):

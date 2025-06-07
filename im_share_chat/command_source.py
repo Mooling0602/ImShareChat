@@ -1,5 +1,7 @@
 """ImCommandSource for mcdr plugins to handle commands from im chat messages.
 """
+import im_share_chat.config.applying as cfg 
+
 from typing import override
 from mcdreforged.api.all import PluginCommandSource, ServerInterface, CommandSource
 from mcdreforged.utils import class_utils
@@ -29,7 +31,19 @@ class ImCommandSource(PluginCommandSource):
 
     @override
     def get_permission_level(self) -> int:
-        return 1
+        if not cfg:
+            return 0
+        if f"{self.__platform.value}!{self.user_id}" in cfg.perm_owners:
+            return 4
+        elif f"{self.__platform.value}!{self.user_id}" in cfg.perm_admins:
+            print(self.__platform.value, self.user_id, cfg.perm_admins)
+            return 3
+        elif f"{self.__platform.value}!{self.user_id}" in cfg.perm_helpers:
+            return 2
+        elif f"{self.__platform.value}!{self.user_id}" in cfg.perm_users:
+            return 1
+        else:
+            return 0
 
     @override
     def reply(self, message: MessageText, **kwargs: object) -> None:

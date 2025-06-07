@@ -2,15 +2,8 @@
 """
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor
-from mcdreforged.api.all import CommandSource, PluginServerInterface, ServerInterface
+from mcdreforged.api.all import PluginServerInterface, ServerInterface
 from mcdreforged.api.decorator import new_thread  # type: ignore
-from im_share_chat.utils import psi
-
-
-def handle_rcon_requests(src: CommandSource, cmd: str):
-    """__Description__
-    """
-    psi.execute_command(f"!!ichat rcon {cmd}", src)
 
 
 @new_thread('RconQueryThread')
