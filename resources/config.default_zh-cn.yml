@@ -30,3 +30,10 @@ transfer_game_event_to_im:
   on_player_death: true
   # 转发玩家成就事件消息
   on_player_advancement: true
+# 非管理员允许使用的服务器命令
+allowed_rcon_commands:
+  - "list"
+  - "ver"
+  - "version"
+  - "tps"
+  - "mspt"

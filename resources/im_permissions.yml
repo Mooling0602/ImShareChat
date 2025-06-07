@@ -1,0 +1,7 @@
+owner:
+admin:
+helper:
+user:
+guest:
+  - qq!12345678
+  - matrix!@user:example.com
